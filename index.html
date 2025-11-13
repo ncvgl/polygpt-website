@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyGPT - Chat with Multiple AI Models Simultaneously</title>
+    <meta name="description" content="Stop tab-switching between AI tools. Type once and ask ChatGPT, Gemini, and Claude simultaneously. Compare AI responses side-by-side in real-time.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'poly-cyan': '#00D4FF',
+                        'poly-blue': '#4D7CFF',
+                        'poly-purple': '#B24DFF',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #00D4FF 0%, #4D7CFF 50%, #B24DFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-border {
+            position: relative;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(135deg, #00D4FF, #4D7CFF, #B24DFF);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .video-placeholder {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(77, 124, 255, 0.1) 50%, rgba(178, 77, 255, 0.1) 100%);
+        }
+    </style>
+
+    <!-- Analytics Placeholder -->
+    <!-- Add your analytics code here (Google Analytics, Plausible, etc.) -->
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Header -->
+    <header class="py-6 px-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="assets/logo.png" alt="PolyGPT Logo" class="w-10 h-10">
+                <span class="text-2xl font-bold gradient-text">PolyGPT</span>
+            </div>
+            <a href="https://github.com/ncvgl/polygpt" target="_blank" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                </svg>
+                <span class="font-medium">GitHub</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- Open Source Badge -->
+            <div class="flex justify-center mb-8">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-poly-cyan/10 via-poly-blue/10 to-poly-purple/10 border border-poly-blue/20">
+                    <svg class="w-4 h-4 text-poly-blue" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+                    </svg>
+                    <span class="text-sm font-medium text-gray-700">Free & Open Source</span>
+                </span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-5xl md:text-6xl font-bold text-center mb-6 leading-tight">
+                Stop tab-switching<br/>
+                <span class="gradient-text">between AI tools</span>
+            </h1>
+
+            <!-- Subheadline -->
+            <p class="text-xl md:text-2xl text-gray-600 text-center max-w-3xl mx-auto mb-12 leading-relaxed">
+                Type once and ask ChatGPT, Gemini, and Claude simultaneously. Compare AI responses side-by-side in real-time.
+            </p>
+
+            <!-- Download CTA -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                <button id="downloadBtn" class="group relative px-8 py-4 bg-gradient-to-r from-poly-cyan via-poly-blue to-poly-purple text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+                    <span id="downloadText">Download for Mac</span>
+                    <svg class="inline-block w-5 h-5 ml-2 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                </button>
+
+                <!-- Platform Selector -->
+                <div class="relative">
+                    <button id="platformToggle" class="flex items-center gap-2 px-6 py-4 bg-white border-2 border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+                        <span id="currentPlatform" class="font-medium text-gray-700">macOS</span>
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div id="platformDropdown" class="hidden absolute top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-10">
+                        <button data-platform="mac" class="platform-option w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                            </svg>
+                            <span class="font-medium">macOS</span>
+                        </button>
+                        <button data-platform="windows" class="platform-option w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+                            </svg>
+                            <span class="font-medium">Windows</span>
+                        </button>
+                        <button data-platform="linux" class="platform-option w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors flex items-center gap-3">
+                            <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.84-.41 1.684-.287 2.489.845 5.331 6.608 6.261 10.237 5.656 1.033-.173 1.99-.458 2.86-.905.515-.265.96-.593 1.334-.977.45-.459.74-.99.84-1.59.115-.735-.054-1.528-.54-2.324-1.03-1.684-2.364-1.857-3.202-2.191-.836-.334-1.527-.836-1.527-1.527 0-.691.691-1.193 1.527-1.527.836-.334 2.172-.507 3.202-2.191.486-.796.655-1.589.54-2.324-.1-.6-.39-1.131-.84-1.59-.374-.384-.819-.712-1.334-.977-.87-.447-1.827-.732-2.86-.905a8.897 8.897 0 00-.87-.045zm-.024 1.095c.147 0 .294.004.441.012.735.04 1.463.192 2.169.452.706.26 1.347.63 1.905 1.095.558.465.997 1.034 1.236 1.68.24.645.24 1.342 0 1.987-.239.646-.678 1.215-1.236 1.68-.558.465-1.199.835-1.905 1.095-.706.26-1.434.412-2.169.452-.735.04-1.47-.04-2.169-.24-.7-.2-1.347-.53-1.905-.996-.558-.465-.997-1.034-1.236-1.68-.24-.645-.24-1.342 0-1.987.239-.646.678-1.215 1.236-1.68.558-.465 1.205-.796 1.905-.996.7-.2 1.434-.28 2.169-.24.147-.008.293-.012.44-.012z"/>
+                            </svg>
+                            <span class="font-medium">Linux</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Placeholder -->
+            <div class="gradient-border max-w-4xl mx-auto mb-16">
+                <div class="video-placeholder aspect-video rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                    <div class="text-center">
+                        <svg class="w-20 h-20 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <p class="text-gray-500 font-medium">Demo video coming soon</p>
+                        <p class="text-sm text-gray-400 mt-2">See PolyGPT in action</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simple Stats/Features -->
+            <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-16">
+                <div>
+                    <div class="text-3xl font-bold gradient-text mb-2">3+ Models</div>
+                    <p class="text-gray-600">ChatGPT, Gemini, Claude</p>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold gradient-text mb-2">Type Once</div>
+                    <p class="text-gray-600">Mirror to all interfaces</p>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold gradient-text mb-2">100% Free</div>
+                    <p class="text-gray-600">Open source & private</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 border-t border-gray-200 mt-16">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="text-gray-600 text-sm">
+                Built by <a href="https://github.com/ncvgl" target="_blank" class="font-medium hover:text-gray-900 transition-colors">Nathan Cavaglione</a>
+            </div>
+            <div class="flex items-center gap-6 text-sm text-gray-600">
+                <a href="https://github.com/ncvgl/polygpt" target="_blank" class="hover:text-gray-900 transition-colors">GitHub</a>
+                <a href="https://github.com/ncvgl/polygpt/blob/main/LICENSE" target="_blank" class="hover:text-gray-900 transition-colors">MIT License</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Platform detection and download logic
+        const downloadLinks = {
+            mac: 'https://github.com/ncvgl/polygpt/releases/latest/download/PolyGPT-mac.dmg',
+            windows: 'https://github.com/ncvgl/polygpt/releases/latest/download/PolyGPT-Setup.exe',
+            linux: 'https://github.com/ncvgl/polygpt/releases/latest/download/PolyGPT.AppImage'
+        };
+
+        const platformNames = {
+            mac: 'macOS',
+            windows: 'Windows',
+            linux: 'Linux'
+        };
+
+        // Detect user's OS
+        function detectOS() {
+            const platform = navigator.platform.toLowerCase();
+            const userAgent = navigator.userAgent.toLowerCase();
+
+            if (platform.includes('mac') || userAgent.includes('mac')) {
+                return 'mac';
+            } else if (platform.includes('win') || userAgent.includes('win')) {
+                return 'windows';
+            } else if (platform.includes('linux') || userAgent.includes('linux')) {
+                return 'linux';
+            }
+            return 'mac'; // Default to Mac
+        }
+
+        let currentPlatform = detectOS();
+
+        // Update download button
+        function updateDownloadButton(platform) {
+            currentPlatform = platform;
+            document.getElementById('downloadText').textContent = `Download for ${platformNames[platform]}`;
+            document.getElementById('currentPlatform').textContent = platformNames[platform];
+            document.getElementById('downloadBtn').onclick = () => {
+                window.location.href = downloadLinks[platform];
+            };
+        }
+
+        // Initialize on page load
+        updateDownloadButton(currentPlatform);
+
+        // Platform dropdown toggle
+        const platformToggle = document.getElementById('platformToggle');
+        const platformDropdown = document.getElementById('platformDropdown');
+
+        platformToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            platformDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            platformDropdown.classList.add('hidden');
+        });
+
+        // Platform selection
+        document.querySelectorAll('.platform-option').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const platform = button.dataset.platform;
+                updateDownloadButton(platform);
+                platformDropdown.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
