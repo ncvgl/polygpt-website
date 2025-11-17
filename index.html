@@ -195,6 +195,14 @@
             currentPlatform = platform;
             document.getElementById('downloadText').textContent = `Download for ${platformNames[platform]}`;
             document.getElementById('downloadBtn').onclick = () => {
+                // Track download event in GoatCounter
+                if (window.goatcounter) {
+                    window.goatcounter.count({
+                        path: '/download-' + platform,
+                        title: 'Download for ' + platformNames[platform],
+                        event: true,
+                    });
+                }
                 window.location.href = downloadLinks[platform];
             };
         }
