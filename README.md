@@ -2,6 +2,20 @@
 
 Single-page landing site for PolyGPT desktop app.
 
+## 🚀 Deploy to Production
+
+**Manual deployment workflow (Git auto-deploy disabled):**
+
+```bash
+cd /Users/ncavaglione/IdeaProjects/fain/polygpt-website
+git add index.html  # or specific files you changed
+git commit -m "your changes"
+git push
+npx vercel --prod --yes
+```
+
+That's it! Site will be live on polygpt.app in ~5 seconds.
+
 ## Structure
 
 - `index.html` - Main landing page (single file, no build required)
